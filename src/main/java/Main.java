@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -8,12 +9,17 @@ import java.io.InputStreamReader;
 public class Main {
 
     public static void main(String args[]) {
-        if(args.length < 2) {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bufferedReader = null;
+        try {
+            if (args.length < 1) {
+                bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+            } else if (args.length == 1) {
+                bufferedReader = new BufferedReader(new FileReader(args[0].trim()));
+            }
             Parking parking = null;
             while (true) {
-                try {
-                    String input = bufferedReader.readLine();
+                String input = bufferedReader.readLine();
+                if (input != null) {
                     String inputCommand[] = input.trim().split(" ");
 
                     if (inputCommand[0].equalsIgnoreCase("create_parking_lot")) {
@@ -29,7 +35,7 @@ public class Main {
                             System.out.println("Not found");
                         } else {
                             // Park car
-                            if(parking != null) {
+                            if (parking != null) {
                                 Car car = new Car();
                                 car.setRegistrationNumber(inputCommand[1]);
                                 car.setColour(inputCommand[2]);
@@ -91,11 +97,12 @@ public class Main {
                     } else {
                         // Do nothing
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-
             }
+
+        } catch (IOException e) {
+            System.out.println(e.getStackTrace());
         }
+
     }
 }
