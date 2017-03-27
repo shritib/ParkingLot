@@ -1,0 +1,8 @@
+mvn clean install
+if [ $# -eq 0 ]
+  then
+    java -cp target/parkingLot-1.0-SNAPSHOT.jar Main
+  else
+    java -cp target/parkingLot-1.0-SNAPSHOT.jar Main "$1"	
+fi
+
