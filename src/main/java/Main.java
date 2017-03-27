@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by shriti.bharani on 3/25/17.
@@ -39,7 +40,11 @@ public class Main {
                                 Car car = new Car();
                                 car.setRegistrationNumber(inputCommand[1]);
                                 car.setColour(inputCommand[2]);
-                                parking.parkCar(car);
+                                Integer allocatedSlot = parking.parkCar(car);
+                                if (allocatedSlot != null)
+                                    System.out.println("Allocated slot number: " + allocatedSlot.toString());
+                                else
+                                    System.out.println("Sorry, parking lot is full");
                             } else {
                                 System.out.println("Not found");
                             }
@@ -49,8 +54,13 @@ public class Main {
                             System.out.println("Not found");
                         } else {
                             //Empty parking slot
-                            if (parking != null)
-                                parking.leaveCar(Integer.valueOf(inputCommand[1]));
+                            if (parking != null){
+                                Integer availableSlot = parking.leaveCar(Integer.valueOf(inputCommand[1]));
+                                if (availableSlot != null)
+                                    System.out.println("Slot number " + availableSlot.toString() + " is free");
+                                else
+                                    System.out.println("Not found");
+                            }
                             else
                                 System.out.println("Not found");
                         }
@@ -80,7 +90,14 @@ public class Main {
                         } else {
                             //colourSlotMap
                             if (parking != null) {
-                                parking.getSlotByColour(inputCommand[1]);
+                                ArrayList<Integer> mappedSlots = parking.getSlotByColour(inputCommand[1]);
+                                if (mappedSlots != null) {
+                                    int i;
+                                    for (i=0; i<mappedSlots.size() - 1; i++)  {
+                                        System.out.print(mappedSlots.get(i) + ", ");
+                                    }
+                                    System.out.print(mappedSlots.get(i)+"\n");
+                                }
                             } else
                                 System.out.println("Not found");
                         }
@@ -90,7 +107,12 @@ public class Main {
                         } else {
                             //regNoSlotMap
                             if (parking != null) {
-                                parking.getSlotByRegistrationNo(inputCommand[1]);
+                                Integer slot = parking.getSlotByRegistrationNo(inputCommand[1]);
+                                if(slot != null) {
+                                    System.out.println(slot.toString());
+                                } else {
+                                    System.out.println("Not found");
+                                }
                             } else
                                 System.out.println("Not found");
                         }

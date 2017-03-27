@@ -27,7 +27,7 @@ public class Parking {
         System.out.println("Created a parking lot with " + slots + " slots");
     }
 
-    public void parkCar(Car car) {
+    public Integer parkCar(Car car) {
         if (availableSlots.size() > 0) {
             Collections.sort(availableSlots);
             Integer availableSlotNumber = availableSlots.get(0);
@@ -43,13 +43,13 @@ public class Parking {
                 colorSlotMap.put(car.getColour(), mappedSlots);
             }
             availableSlots.remove(0);
-            System.out.println("Allocated slot number: " + availableSlotNumber.toString());
+            return availableSlotNumber;
         } else {
-            System.out.println("Sorry, parking lot is full");
+            return null;
         }
     }
 
-    public void leaveCar(Integer slot) {
+    public Integer leaveCar(Integer slot) {
         Car car = slotMap.get(slot);
         if (car != null) {
             registrationSlotMap.remove(car.getRegistrationNumber());
@@ -61,9 +61,9 @@ public class Parking {
             }
             slotMap.remove(slot);
             availableSlots.add(slot);
-            System.out.println("Slot number " + slot.toString() + " is free");
+            return slot;
         } else {
-            System.out.println("Not found");
+            return null;
         }
     }
 
@@ -77,24 +77,14 @@ public class Parking {
         }
     }
 
-    public void getSlotByColour(String colour) {
+    public ArrayList<Integer> getSlotByColour(String colour) {
         ArrayList<Integer> mappedSlots = colorSlotMap.get(colour);
-        if (mappedSlots != null) {
-            int i;
-            for (i=0; i<mappedSlots.size() - 1; i++)  {
-                System.out.print(mappedSlots.get(i) + ", ");
-            }
-            System.out.print(mappedSlots.get(i)+"\n");
-        }
+        return mappedSlots;
     }
 
-    public void getSlotByRegistrationNo(String registrationNumber) {
+    public Integer getSlotByRegistrationNo(String registrationNumber) {
         Integer slot = registrationSlotMap.get(registrationNumber);
-        if(slot != null) {
-            System.out.println(slot.toString());
-        } else {
-            System.out.println("Not found");
-        }
+        return slot;
     }
 
     public void getCarsByColour(String colour) {
